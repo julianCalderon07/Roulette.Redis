@@ -29,6 +29,7 @@ namespace Roulette.Redis.Services
             else
             {
                 numRoulette = int.Parse(Roulette) + 1;
+                bool result= await db.StringSetAsync("NumRuleta", numRoulette);
             }
             var data = new HashEntry[] {
                 new HashEntry("Roulette"+numRoulette,0)
@@ -89,12 +90,13 @@ namespace Roulette.Redis.Services
             var data = new HashEntry[] {
                 new HashEntry(roulette,0)
             };
-            var x = await db.HashGetAllAsync("Bet-" + roulette);
+            await db.HashSetAsync("Roulette", data);
+            var listBet = await db.HashGetAllAsync("Bet-" + roulette);
             List<WinnersType> winnersList = new List<WinnersType>();
             BetType apuestas = new BetType();
-            WinnersType winnersType = new WinnersType();
-            foreach (var item in x)
+            foreach (var item in listBet)
             {
+                WinnersType winnersType = new WinnersType();
                 apuestas = JsonConvert.DeserializeObject<BetType>(item.Value);
                 if (apuestas.number is not null)
                 {
@@ -147,8 +149,9 @@ namespace Roulette.Redis.Services
                     }
                 }
             }
+            string output= JsonConvert.SerializeObject(winnersList).Replace("'\'"," ");
 
-            return JsonConvert.SerializeObject(winnersType);
+            return output;
         }
     }
 }

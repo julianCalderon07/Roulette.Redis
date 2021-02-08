@@ -30,7 +30,7 @@ namespace Roulette.Redis.Controllers
             {
                 response.Code = 200;
                 response.Message = "Se ha creado correctamente "+ keyRoulette ;
-                response.OutPut = JsonConvert.SerializeObject("Id: " + keyRoulette);
+                response.OutPut = "Id: " + keyRoulette;
             }
             else
             {
@@ -51,7 +51,7 @@ namespace Roulette.Redis.Controllers
             {
                 response.Code = 200;
                 response.Message = "Se ha activado correctamente "+ nameRoulette;
-                response.OutPut = JsonConvert.SerializeObject(nameRoulette);
+                response.OutPut = nameRoulette;
             }
             else
             {
